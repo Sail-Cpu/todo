@@ -10,6 +10,15 @@ app.use(express.json());
 /* User Authentification */
 app.use('/auth', authRouter)
 
+app.get("/users", async (req, res) => {
+    try{
+        const allUsers = await pool.query("select * from users");
+        res.json(allUsers.rows);
+    }catch(error){
+        console.log(error);
+    }
+})
+
 app.listen(3001, () => {
     console.log("server has started on port 3001");
 })

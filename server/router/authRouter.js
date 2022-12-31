@@ -6,11 +6,11 @@ const bcrypt = require("bcrypt");
 router.post("/signup", async (req, res) => {
     try{
         let {pseudo, password1, password2} = req.body;
-        let pseudoExist = await pool.query(`select * from users where pseudo = $1`, [pseudo]);
+        let pseudoExist = await pool.query(`select * from users where username = $1`, [pseudo]);
         if(!pseudoExist.rowCount > 0){
             if(password1 == password2 && password1.length >= 8){
                 let hashPass = await bcrypt.hash(password1, 10);
-                let insertUser = await pool.query(`insert into users (pseudo, password) values($1, $2) returning *`, [pseudo, hashPass], 
+                let insertUser = await pool.query(`insert into users (username, password) values($1, $2) returning *`, [pseudo, hashPass], 
                 (err, result) => {
                     if(result){
                         res.send({loggedIn: true, data: result.rows[0]});
@@ -20,13 +20,13 @@ router.post("/signup", async (req, res) => {
                 })
             }else{
                 if(password1 != password2){
-                    res.send({loggedIn: true, error: "les mot de passe sont différent"});
+                    res.send({loggedIn: false, error: "les mot de passe sont différent"});
                 }else{
-                    res.send({loggedIn: true, error: "le mot de passe ne contient pas un minimum de 8 caractére"});
+                    res.send({loggedIn: false, error: "le mot de passe ne contient pas un minimum de 8 caractére"});
                 }
             }
         }else{
-            res.send({loggedIn: true, error: "pseudo deja utilisé"});
+            res.send({loggedIn: false, error: "pseudo deja utilisé"});
         }
     }catch(error){
         console.log(error);
@@ -36,7 +36,7 @@ router.post("/signup", async (req, res) => {
 router.post('/signin', async (req, res) => {
     try{
         let {pseudo, password} = req.body;
-        const pseudoExist = await pool.query(`select * from users where pseudo = $1`, [pseudo], 
+        const pseudoExist = await pool.query(`select * from users where username = $1`, [pseudo], 
         (err, result) => {
             if(result.rowCount > 0){
                 bcrypt.compare(password, result.rows[0].password, (err, isMatch) => {
@@ -48,7 +48,7 @@ router.post('/signin', async (req, res) => {
                     }
                 })
             }else{
-                res.send({loggedIn: true, error: "le pseudo ou le mot de passe est incorecte"});
+                res.send({loggedIn: false, error: "le pseudo ou le mot de passe est incorecte"});
             }
         });
        
