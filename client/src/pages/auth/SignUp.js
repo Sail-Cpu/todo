@@ -1,8 +1,11 @@
-import React,{useState} from "react";
+import React,{useState, useContext} from "react";
 import axios from 'axios';
 import { Link } from "react-router-dom";
+import { userContext } from "../../context/UserContext";
 
 const SignUp = () => {
+
+    const { setToken } = useContext(userContext);
 
     const [pseudo, setPseudo] = useState('');
     const [password1, setPassword1] = useState('');
@@ -29,6 +32,8 @@ const SignUp = () => {
                     setErrorMessage(result.data.error);
                 }else{
                     setErrorMessage(result.data.error);
+                    setToken(result.data);
+                    //navigate('/');
                 }
             }).catch((error) => {
                 console.log(error);
