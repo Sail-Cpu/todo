@@ -3,12 +3,14 @@ const app = express();
 const cors = require("cors");
 const pool = require("./db");
 const authRouter = require("./router/authRouter");
+const tasksRouter = require("./router/tasksRouter");
 
 app.use(cors());
 app.use(express.json());
 
 /* User Authentification */
-app.use('/auth', authRouter)
+app.use('/auth', authRouter);
+app.use('/task', tasksRouter);
 
 app.get("/users", async (req, res) => {
     try{

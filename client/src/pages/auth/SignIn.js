@@ -38,9 +38,9 @@ const SignIn = () => {
             })
         }catch(error){
             console.log(error);
-        }
-        
+        } 
     }
+    
     return(
         <div className="sign-page">
             <div className="sign-container">

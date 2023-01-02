@@ -1,6 +1,6 @@
 import React,{useState, useContext} from "react";
 import axios from 'axios';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { userContext } from "../../context/UserContext";
 
 const SignUp = () => {
@@ -12,6 +12,7 @@ const SignUp = () => {
     const [password2, setPassword2] = useState('');
 
     const [errorMessage, setErrorMessage] = useState('');
+    const navigate = useNavigate();
 
     const config = {
         method: 'post',
@@ -33,7 +34,7 @@ const SignUp = () => {
                 }else{
                     setErrorMessage(result.data.error);
                     setToken(result.data);
-                    //navigate('/');
+                    navigate('/');
                 }
             }).catch((error) => {
                 console.log(error);

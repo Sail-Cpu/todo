@@ -1,6 +1,6 @@
 import React from "react";
 
-const Todo = () => {
+const Todo = (props) => {
     return(
         <div className="todo-container">
             <div className="todo">
@@ -8,10 +8,10 @@ const Todo = () => {
                     <input type='checkbox' />
                 </div>
                 <div className="todo-middle">
-                    <textarea placeholder="titre de la tache"></textarea>
+                    <div className="textarea">{props.name}</div>
                 </div>
                 <div className="todo-bottom">
-                    <button>Create</button>
+                    <button style={{backgroundColor: 'red'}} type="submit">Delete</button>
                 </div>
             </div>
         </div>
