@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import axios from 'axios';
 import { userContext } from "../context/UserContext";
 
@@ -8,7 +8,9 @@ const Todo = () => {
 
     const [user_id, setUserid] = useState();
     const [task_name, setTask_name] = useState();
+    const [taskStatus, setTaskStatus] = useState();
     const [errorMessage, setErrorMessage] = useState('');
+    const taskName = useRef();
 
     useEffect(() => {
         setUserid(getToken().data.user_id);
@@ -24,6 +26,7 @@ const Todo = () => {
     }
 
     const formSubmit = async (e) => {
+        e.preventDefault();
         try{
             axios(config).then((result) => {
                 if(result.data.error){
@@ -37,18 +40,33 @@ const Todo = () => {
         } 
     }
 
+    const [isOpen, setIsOpen] = useState(false);
+
     return(
         <div className="todo-container">
             <form className="todo" onSubmit={(e) => formSubmit(e)}>
                 <div className="todo-top">
-                    <input type='checkbox' />
+                    <input type='text' value={task_name} onChange={(e) => setTask_name(e.target.value)}/>
+                    <span onClick={() => setIsOpen(!isOpen)}>...</span>
+                    {isOpen &&
+                        <div className="status-choose-container">
+                            <div className="status-choose" onClick={() => setTaskStatus('To Do') || setIsOpen(false)}>To Do</div>
+                            <div className="status-choose" onClick={() => setTaskStatus('In Progress') || setIsOpen(false)}>In Progress</div>
+                            <div className="status-choose" onClick={() => setTaskStatus('Done') || setIsOpen(false)}>Done</div>
+                        </div>
+                    }
                 </div>
                 <div className="todo-middle">
-                    <textarea className="textarea" value={task_name} placeholder="titre de la tache" onChange={(e) => setTask_name(e.target.value)}></textarea>
+                    {taskStatus && 
+                        <div className="todo-status">
+                            {taskStatus}
+                        </div>
+                    }
+                    
                 </div>
                 <div className="todo-bottom">
-                    <button type="submit">Create</button>
-                    <span>{errorMessage}</span>
+                    <input type='date' />
+                    <button>+ Create</button>
                 </div>
             </form>
         </div>

@@ -41,11 +41,6 @@ const Home = () => {
                 </div>
                 <div className="todo-list-container">
                     <TodoCreator />
-                    {tasks.map((todo) => {
-                        return(
-                            <Todo name={todo.task_name} />
-                        )
-                    })}
                 </div>
             </div>
         </div>
