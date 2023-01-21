@@ -41,6 +41,13 @@ const Home = () => {
                 </div>
                 <div className="todo-list-container">
                     <TodoCreator />
+                    {
+                        tasks.map((task, idx) => {
+                            return(
+                                <Todo key={idx}  name={task.task_name} date={task.end_date} status={task.task_status}/>
+                            )
+                        })
+                    }
                 </div>
             </div>
         </div>

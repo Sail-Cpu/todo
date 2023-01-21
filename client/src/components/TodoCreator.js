@@ -8,6 +8,7 @@ const Todo = () => {
 
     const [user_id, setUserid] = useState();
     const [task_name, setTask_name] = useState();
+    const [taskDate, setTaskDate] = useState();
     const [taskStatus, setTaskStatus] = useState();
     const [errorMessage, setErrorMessage] = useState('');
     const taskName = useRef();
@@ -21,12 +22,13 @@ const Todo = () => {
         url: "http://localhost:3001/task/taskscreate",
         data:{
             user_id,
-            task_name
+            task_name,
+            taskDate,
+            taskStatus
         }
     }
 
     const formSubmit = async (e) => {
-        e.preventDefault();
         try{
             axios(config).then((result) => {
                 if(result.data.error){
@@ -37,7 +39,10 @@ const Todo = () => {
             });
         }catch(error){
             console.log(error);
-        } 
+        }
+        setTask_name();
+        setTaskDate();
+        setTaskStatus();
     }
 
     const [isOpen, setIsOpen] = useState(false);
@@ -58,15 +63,16 @@ const Todo = () => {
                 </div>
                 <div className="todo-middle">
                     {taskStatus && 
-                        <div className="todo-status">
+                        <div className="todo-status" style={taskStatus == 'To Do' ? {backgroundColor: '#ff292950', color: '#ff2929'} : {} && 
+                        taskStatus == 'In Progress' ? {backgroundColor: '#ffaa2c50', color: '#ffaa2c'} : {} && taskStatus == 'Done' ? {backgroundColor: '#afff5750', color: '#afff57'} : {}}>
                             {taskStatus}
                         </div>
                     }
                     
                 </div>
                 <div className="todo-bottom">
-                    <input type='date' />
-                    <button>+ Create</button>
+                    <input type='date' value={taskDate} onChange={(e) => setTaskDate(e.target.value)}/>
+                    <button style={{backgroundColor: '#37b24d'}}>+ Create</button>
                 </div>
             </form>
         </div>
