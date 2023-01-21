@@ -21,7 +21,6 @@ const Home = () => {
         }catch(error){
             console.log(error);
         }
-        
     }, [])
 
     const config = {
@@ -44,7 +43,7 @@ const Home = () => {
                     {
                         tasks.map((task, idx) => {
                             return(
-                                <Todo key={idx}  name={task.task_name} date={task.end_date} status={task.task_status}/>
+                                <Todo key={idx} id={task.task_id}  name={task.task_name} date={task.end_date} status={task.task_status}/>
                             )
                         })
                     }

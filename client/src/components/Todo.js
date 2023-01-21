@@ -1,4 +1,5 @@
 import React,{ useState } from "react";
+import axios from "axios";
 import { format } from 'date-fns';
 
 const Todo = (props) => {
@@ -6,7 +7,24 @@ const Todo = (props) => {
     const date = new Date(props.date);
     const formattedDate = date.toLocaleDateString("fr-FR")
     const [taskStatus, setTaskStatus] = useState();
+    const [task_id, setTask_id] = useState(props.id);
     const [isOpen, setIsOpen] = useState(false);
+
+    const config = {
+        method: 'post',
+        url: "http://localhost:3001/task/deletetask",
+        data:{
+            task_id,
+        }
+    }
+
+    const deleteTask = () => {
+        try{
+            axios(config);
+        }catch(error){
+            console.log(error);
+        }
+    }
 
     return(
         <div className="todo-container">
@@ -29,10 +47,10 @@ const Todo = (props) => {
                     </div>
                     
                 </div>
-                <div className="todo-bottom">
+                <form onSubmit={() => deleteTask()} className="todo-bottom">
                     <div>{formattedDate}</div>
-                    <button style={{backgroundColor: 'red'}}>- Delete</button>
-                </div>
+                    <button type='submit' style={{backgroundColor: 'red'}}>- Delete</button>
+                </form>
             </div>
         </div>
     )
