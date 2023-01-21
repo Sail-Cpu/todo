@@ -20,8 +20,9 @@
         width: 100%;
         padding: 40px;
         align-items: center;
+        justify-content: center;
         display: grid;
-        grid-template-columns:  repeat(auto-fit, minmax(250px, 1fr));
+        grid-template-columns:  repeat(auto-fit, minmax(320px, 0fr));
         grid-gap: 25px;
     }
 }

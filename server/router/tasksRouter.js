@@ -40,5 +40,13 @@ router.post("/deletetask", async (req, res) => {
     }
 })
 
+router.post("/updateStatus", async (req, res) => {
+    try{
+        let { task_id } = req.body;
+        let deleteTask = await pool.query(`delete from tasks where task_id=$1`, [task_id]);
+    }catch(error){
+        console.log(error);
+    }
+})
 
 module.exports = router;
