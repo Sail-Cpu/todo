@@ -2,12 +2,12 @@ import React, { useEffect, useState, useContext, useRef } from "react";
 import axios from 'axios';
 import { userContext } from "../context/UserContext";
 
-const Todo = () => {
+const Todo = (props) => {
 
     const {getToken} = useContext(userContext);
 
     const [user_id, setUserid] = useState();
-    const [task_name, setTask_name] = useState();
+    const [task_name, setTask_name] = useState("");
     const [taskDate, setTaskDate] = useState();
     const [taskStatus, setTaskStatus] = useState();
     const [errorMessage, setErrorMessage] = useState('');
@@ -29,21 +29,24 @@ const Todo = () => {
     }
 
     const formSubmit = async (e) => {
+        e.preventDefault();
         try{
             axios(config).then((result) => {
                 if(result.data.error){
                     setErrorMessage(result.data.error);
                 }else{
                     setErrorMessage('');
+                    props.setTasks([...props.tasks, result.data.tasks[0]]);
+                    setTask_name("");
+                    setTaskDate();
+                    setTaskStatus();
                 }
             });
         }catch(error){
             console.log(error);
         }
-        setTask_name();
-        setTaskDate();
-        setTaskStatus();
     }
+
 
     const [isOpen, setIsOpen] = useState(false);
 

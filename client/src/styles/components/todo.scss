@@ -91,5 +91,13 @@
             box-sizing: border-box;
             cursor: pointer;
         }
+        .update-button{
+            border-radius: 100px;
+            background-color: orange;
+            margin-right: 10px;
+            img{
+                width: 15px;
+            }
+        }
     }
 }

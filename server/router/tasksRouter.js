@@ -5,10 +5,17 @@ const pool = require("../db");
 router.post("/taskscreate", async (req,res) => {
     try{
         let {user_id, task_name, taskDate, taskStatus} = req.body;
-        if(task_name != null && taskStatus != null){
-            let createTasks = pool.query(`insert into tasks(user_id, task_name, end_date, task_status) values($1, $2, $3, $4)`, [user_id, task_name, taskDate, taskStatus]); 
+        if(task_name != "" && taskStatus != null){
+            let createTasks = pool.query(`insert into tasks(user_id, task_name, end_date, task_status) values($1, $2, $3, $4) returning *`, [user_id, task_name, taskDate, taskStatus], 
+            (err, result) => {
+                if(result){
+                    res.send({tasks: result.rows});
+                }else{
+                    console.log(err);
+                }
+            }); 
         }else{
-            res.send({error: "la tache doit avoir un nom"});
+            res.send({error: "tous les champs doive étre rempli"});
         }
     }catch(error){
         console.log(error)
@@ -34,16 +41,17 @@ router.post("/usertasks", async (req, res) => {
 router.post("/deletetask", async (req, res) => {
     try{
         let { task_id } = req.body;
-        let deleteTask = await pool.query(`delete from tasks where task_id=$1`, [task_id]);
+        let deleteTask = await pool.query(`delete from tasks where task_id=$1`, [task_id])
     }catch(error){
         console.log(error);
     }
 })
 
-router.post("/updateStatus", async (req, res) => {
+router.post("/updatetask", async (req, res) => {
     try{
-        let { task_id } = req.body;
-        let deleteTask = await pool.query(`delete from tasks where task_id=$1`, [task_id]);
+        let { task_id, newName, newStatus, adate } = req.body;
+        let deleteTask = await pool.query(`update tasks set task_name=$2, task_status=$3, end_date=$4 where task_id=$1`, 
+        [task_id, newName, newStatus, adate]);
     }catch(error){
         console.log(error);
     }

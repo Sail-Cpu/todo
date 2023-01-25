@@ -30,6 +30,12 @@ const Home = () => {
             user_id,
         }
     }
+    
+    console.log(tasks);
+
+    useEffect(() => {
+        console.log(tasks[0]);
+    }, [tasks])
 
     return(
         <div className="home">
@@ -39,11 +45,11 @@ const Home = () => {
                     <input className="search" type='text' />
                 </div>
                 <div className="todo-list-container">
-                    <TodoCreator />
+                    <TodoCreator setTasks={setTasks} tasks={tasks}/>
                     {
                         tasks.map((task, idx) => {
                             return(
-                                <Todo key={idx} id={task.task_id}  name={task.task_name} date={task.end_date} status={task.task_status}/>
+                                <Todo key={idx} id={task.task_id}  name={task.task_name} date={task.end_date} status={task.task_status} tasks={tasks} setTasks={setTasks} />
                             )
                         })
                     }
